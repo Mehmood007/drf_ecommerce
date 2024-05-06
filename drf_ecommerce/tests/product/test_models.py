@@ -34,7 +34,28 @@ class TestProductLineModel:
             product_line_factory(order=1, product=product)
 
 
+class TestProductTypeModel:
+    def test_str_method(self, product_type_factory, attribute_factory):
+        product_type = product_type_factory.create(attribute=(attribute_factory(),))
+        assert product_type.__str__() == product_type.name
+
+
 class TestProductImageModel:
     def test_str_method(self, product_image_factory):
         product_image = product_image_factory()
         assert product_image.__str__() == product_image.url
+
+
+class TestAttributeModel:
+    def test_str_method(self, attribute_factory):
+        attribute = attribute_factory()
+        assert attribute.__str__() == attribute.name
+
+
+class TestAttributeValueModel:
+    def test_str_method(self, attribute_value_factory):
+        attribute_value = attribute_value_factory()
+        assert (
+            attribute_value.__str__()
+            == f'{attribute_value.attribute} {attribute_value.attribute_value}'
+        )

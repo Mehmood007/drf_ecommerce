@@ -1,7 +1,16 @@
 import factory
 from factory.faker import faker
 
-from product.models import Brand, Category, Product, ProductImage, ProductLine
+from product.models import (
+    Attribute,
+    AttributeValue,
+    Brand,
+    Category,
+    Product,
+    ProductImage,
+    ProductLine,
+    ProductType,
+)
 
 fake = faker.Faker()
 
@@ -17,7 +26,36 @@ class BrandFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Brand
 
-    name = name = factory.sequence(lambda n: 'Brand_%d' % n)
+    name = factory.sequence(lambda n: 'Brand_%d' % n)
+
+
+class AttributeFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Attribute
+
+    name = fake.word()
+    description = fake.paragraph()
+
+
+class AttributeValueFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = AttributeValue
+
+    attribute_value = fake.word()
+    attribute = factory.SubFactory(AttributeFactory)
+
+
+class ProductTypeFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ProductType
+
+    name = fake.word()
+
+    @factory.post_generation
+    def attribute(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            return
+        self.attribute.add(*extracted)
 
 
 class ProductFactory(factory.django.DjangoModelFactory):
@@ -29,6 +67,7 @@ class ProductFactory(factory.django.DjangoModelFactory):
     is_digital = fake.boolean()
     brand = factory.SubFactory(BrandFactory)
     category = factory.SubFactory(CategoryFactory)
+    product_type = factory.SubFactory(ProductTypeFactory)
     is_active = True
 
 
