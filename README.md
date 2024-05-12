@@ -44,4 +44,7 @@
 
 
 - **Run Server**  
+  - First make sure everythin is fine and run test cases.  
+  - To run test case just type `pytest` and press enter  
+  - If everything is fine then start server  
   `python manage.py runserver`

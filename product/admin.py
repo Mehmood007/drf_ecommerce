@@ -33,8 +33,12 @@ class ProductImageInLine(admin.TabularInline):
     model = ProductImage
 
 
+class AttributeValueProductInline(admin.TabularInline):
+    model = AttributeValue.product_attr_value.through
+
+
 class ProductAdmin(admin.ModelAdmin):
-    inlines = [ProductLineInLine]
+    inlines = [ProductLineInLine, AttributeValueProductInline]
 
 
 class AttributeValueInline(admin.TabularInline):
