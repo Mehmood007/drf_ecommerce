@@ -30,11 +30,11 @@ class TestProductEndpoint:
         assert response.status_code == 200
         assert json.loads(response.content)['slug'] == product.slug
 
-    def test_return_products_by_category_name(
+    def test_return_products_by_category_slug(
         self, category_factory, product_factory, api_client
     ):
         category = category_factory()
         product_factory(category=category)
-        response = api_client().get(f'{self.endpoint}category/{category.name}/')
+        response = api_client().get(f'{self.endpoint}category/{category.slug}/')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == 1
